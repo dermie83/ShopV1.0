@@ -7,16 +7,20 @@ import java.util.Scanner;
 public class Driver{
 
     private Scanner input = new Scanner(System.in);
-    private Product product;
+    //private Product product;
+    private Store store;
+
 
     public static void main(String[] args) {
 		Driver c = new Driver();
-		c.addProduct();
+        c.processOrder();
 		c.printProduct();
 	}
 
     //gather the product data from the user and create a new product.
     private void addProduct(){
+        //dummy read of String to clear the buffer - bug in Scanner class.
+        input.nextLine();
     	System.out.print("Enter the Product Name:  ");
         String productName = input.nextLine();
         System.out.print("Enter the Product Code:  ");
@@ -29,12 +33,27 @@ public class Driver{
     	if ((currentProduct == 'y') || (currentProduct == 'Y'))
     		inCurrentProductLine = true;
     	
-        product = new Product(productName, productCode, unitCost, inCurrentProductLine);
+        //product = new Product(productName, productCode, unitCost, inCurrentProductLine);
+        store.add(new Product(productName, productCode, unitCost, inCurrentProductLine));
+
     }
-    
+
     //print the product (the toString method is automatically called).
     private void printProduct(){
-    	System.out.println(product);
+        System.out.println(store.listProducts());
+    }
+
+    private void processOrder(){
+        //find out from the user how many products they would like to order
+        System.out.print("How many Products would you like to have in your Store?  ");
+        int numberProducts = input.nextInt();
+
+        store = new Store(numberProducts);
+
+        //ask the user for the details of the products and add them to the order
+        for (int i = 0; i < numberProducts; i++){
+            addProduct();
+        }
     }
 	   	
 }
